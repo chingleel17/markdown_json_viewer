@@ -1,0 +1,205 @@
+/* ---------------------------------- */
+/* --- THEME VARIABLES --- */
+/* ---------------------------------- */
+
+/* Light Theme (Default) */
+:root,
+[data-theme="light"] {
+  --theme-bg: #ffffff;
+  --theme-bg-medium: #f8f9fa;
+  --theme-bg-light: #e9ecef;
+  --theme-text: #212529;
+  --theme-text-muted: #6c757d;
+  --theme-border: #dee2e6;
+  --theme-accent: #0d6efd;
+}
+
+/* Dark Theme */
+[data-theme="dark"] {
+  --theme-bg: #1a1b26;
+  --theme-bg-medium: #24283b;
+  --theme-bg-light: #2a2f41;
+  --theme-text: #c0caf5;
+  --theme-text-muted: #a9b1d6;
+  --theme-border: #414868;
+  --theme-accent: #7aa2f7;
+}
+
+/* Shared Variables */
+:root {
+  --cyan-accent: #0db9d7;
+  --font-mono: "SF Mono", "Menlo", "Monaco", "Consolas", "Liberation Mono",
+    "Courier New", monospace;
+}
+
+/* ---------------------------------- */
+/* --- BASE & GENERAL STYLES --- */
+/* ---------------------------------- */
+
+body {
+  background-color: var(--theme-bg);
+  color: var(--theme-text);
+  font-family: var(--font-mono);
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+main {
+  flex-grow: 1;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+label,
+.card-title,
+.form-label {
+  color: var(--theme-text);
+}
+
+.text-muted {
+  color: var(--theme-text-muted) !important;
+}
+
+/* --- Custom Scrollbar --- */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--theme-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--theme-bg-light);
+  border-radius: 5px;
+  border: 2px solid var(--theme-bg);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--theme-border);
+}
+
+/* ---------------------------------- */
+/* --- HEADER & FOOTER --- */
+/* ---------------------------------- */
+
+header {
+  background-color: var(--theme-bg-medium);
+  border-bottom: 1px solid var(--theme-border);
+}
+
+header h4,
+header a,
+header a:hover {
+  color: var(--theme-text) !important;
+}
+
+#theme-switcher {
+  color: var(--theme-text);
+}
+
+.nav-pills .nav-link {
+  color: var(--theme-text-muted);
+  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+}
+
+.nav-pills .nav-link.active,
+.nav-pills .show > .nav-link {
+  background-color: var(--theme-accent);
+  color: #ffffff;
+}
+
+.nav-pills .nav-link:hover {
+  color: var(--theme-text);
+  background-color: var(--theme-bg-light);
+}
+
+/* ---------------------------------- */
+/* --- FORMS & CONTROLS --- */
+/* ---------------------------------- */
+
+.form-control,
+.form-select {
+  background-color: var(--theme-bg-light);
+  color: var(--theme-text);
+  border: 1px solid var(--theme-border);
+  font-family: var(--font-mono);
+}
+
+.form-control:focus {
+  background-color: var(--theme-bg-light);
+  color: var(--theme-text);
+  border-color: var(--cyan-accent);
+  box-shadow: 0 0 10px rgba(13, 185, 215, 0.4);
+}
+
+.form-control::placeholder {
+  color: var(--theme-text-muted);
+  opacity: 0.7;
+}
+
+pre,
+.list-group,
+#markdown-output {
+  background-color: var(--theme-bg-medium);
+  border: 1px solid var(--theme-border) !important;
+  border-radius: 0.375rem;
+}
+
+.card {
+  background-color: var(--theme-bg-medium);
+  border-color: var(--theme-border);
+}
+
+#json-status .badge.bg-success {
+  background-color: #198754 !important;
+}
+
+#json-status .badge.bg-danger {
+  background-color: #dc3545 !important;
+}
+#json-input,
+#json-output {
+  height: 80vh;
+  font-family: var(--font-mono);
+  overflow: auto;
+}
+
+/* ---------------------------------- */
+/* --- BUTTONS & ANIMATIONS --- */
+/* ---------------------------------- */
+
+#btn-format-json {
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+#btn-format-json:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 15px var(--theme-accent);
+}
+
+@keyframes success-glow {
+  0% {
+    box-shadow: 0 0 0 0 rgba(40, 167, 69, 0.7);
+    border-color: #28a745;
+  }
+  50% {
+    box-shadow: 0 0 20px 5px rgba(40, 167, 69, 0.4);
+    border-color: #28a745;
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(40, 167, 69, 0);
+    border-color: var(--theme-border);
+  }
+}
+
+.glow-success {
+  animation: success-glow 0.8s ease-out;
+}

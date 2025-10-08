@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DevTools Box</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <header class="p-3 mb-3 border-bottom">
+      <div class="container-fluid">
+        <div
+          class="d-flex flex-wrap align-items-center justify-content-between"
+        >
+          <a
+            href="/"
+            class="d-flex align-items-center mb-2 mb-lg-0 text-decoration-none"
+          >
+            <h4 class="me-4 mb-0">DevTools Box</h4>
+          </a>
+
+          <div class="d-flex align-items-center">
+            <!-- Tab Navigation -->
+            <ul class="nav nav-pills me-3" id="myTab" role="tablist">
+              <li class="nav-item" role="presentation">
+                <button
+                  class="nav-link"
+                  id="rag-viewer-tab"
+                  data-bs-toggle="tab"
+                  data-bs-target="#rag-viewer-pane"
+                  type="button"
+                  role="tab"
+                  aria-controls="rag-viewer-pane"
+                  aria-selected="false"
+                >
+                  RAG Viewer
+                </button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button
+                  class="nav-link"
+                  id="json-tool-tab"
+                  data-bs-toggle="tab"
+                  data-bs-target="#json-tool-pane"
+                  type="button"
+                  role="tab"
+                  aria-controls="json-tool-pane"
+                  aria-selected="false"
+                >
+                  JSON Tool
+                </button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button
+                  class="nav-link"
+                  id="markdown-tool-tab"
+                  data-bs-toggle="tab"
+                  data-bs-target="#markdown-tool-pane"
+                  type="button"
+                  role="tab"
+                  aria-controls="markdown-tool-pane"
+                  aria-selected="false"
+                >
+                  Markdown Previewer
+                </button>
+              </li>
+            </ul>
+
+            <button class="btn btn-sm me-3" id="theme-switcher">
+              <i class="bi bi-sun-fill"></i>
+            </button>
+
+            <a href="#" title="TODO: Add GitHub Link">
+              <i class="bi bi-github" style="font-size: 1.5rem"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="container-fluid">
+      <!-- Tab Content -->
+      <div class="tab-content" id="myTabContent">
+        <!-- RAG Viewer Pane -->
+        <div
+          class="tab-pane fade"
+          id="rag-viewer-pane"
+          role="tabpanel"
+          aria-labelledby="rag-viewer-tab"
+          tabindex="0"
+        >
+          <div class="row mt-3">
+            <!-- Data Input Column -->
+            <div class="col-12 mb-3">
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title">Load RAG Data</h5>
+                  <div class="mb-3">
+                    <label for="rag-file-input" class="form-label"
+                      >Load from .json file</label
+                    >
+                    <input
+                      class="form-control"
+                      type="file"
+                      id="rag-file-input"
+                      accept=".json"
+                    />
+                  </div>
+                  <div class="form-floating">
+                    <textarea
+                      class="form-control"
+                      id="rag-text-input"
+                      style="height: 150px; font-family: monospace"
+                    ></textarea>
+                    <label for="rag-text-input">Or paste JSON array here</label>
+                  </div>
+                  <button class="btn btn-primary mt-2" id="btn-load-rag-text">
+                    Load Pasted Text
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Viewer Columns -->
+            <div class="col-md-4">
+              <h5>Chunks List</h5>
+              <div class="mb-2">
+                <input
+                  type="search"
+                  id="rag-search-input"
+                  class="form-control"
+                  placeholder="Search in pageContent..."
+                />
+              </div>
+              <div
+                id="rag-chunk-list"
+                class="list-group"
+                style="height: 60vh; overflow-y: auto"
+              >
+                <!-- Chunk items will be populated by JS -->
+              </div>
+            </div>
+            <div class="col-md-4">
+              <h5>Page Content</h5>
+              <pre
+                id="rag-page-content"
+                class="border p-2"
+                style="
+                  height: 60vh;
+                  overflow-y: auto;
+                  white-space: pre-wrap;
+                  word-wrap: break-word;
+                "
+              ></pre>
+            </div>
+            <div class="col-md-4">
+              <h5>Metadata</h5>
+              <pre
+                id="rag-metadata"
+                class="border p-2 bg-light"
+                style="
+                  height: 60vh;
+                  overflow-y: auto;
+                  white-space: pre-wrap;
+                  word-wrap: break-word;
+                "
+              ></pre>
+            </div>
+          </div>
+        </div>
+        <!-- JSON Tool Pane -->
+        <div
+          class="tab-pane fade"
+          id="json-tool-pane"
+          role="tabpanel"
+          aria-labelledby="json-tool-tab"
+          tabindex="0"
+        >
+          <div class="row align-items-center justify-content-center">
+            <!-- Input Column -->
+            <div class="col-5">
+              <div
+                class="d-flex justify-content-between align-items-center mb-2"
+              >
+                <h5 class="mb-0">Input</h5>
+                <div class="d-flex align-items-center">
+                  <button class="btn btn-sm btn-danger" id="btn-clear-json">
+                    <i class="bi bi-x-lg me-1"></i> Clear
+                  </button>
+                </div>
+              </div>
+              <textarea
+                class="form-control"
+                id="json-input"
+                placeholder="Paste your JSON here..."
+              ></textarea>
+            </div>
+
+            <!-- Center Action Button -->
+            <div class="col-lg-auto text-center px-2">
+              <button
+                class="btn btn-primary rounded-circle p-0"
+                id="btn-format-json"
+                style="
+                  width: 50px;
+                  height: 50px;
+                  font-size: 24px;
+                  line-height: 50px;
+                "
+              >
+                <i class="bi bi-arrow-right"></i>
+              </button>
+            </div>
+
+            <!-- Output Column -->
+            <div class="col-5">
+              <div
+                class="d-flex justify-content-between align-items-center mb-2"
+              >
+                <h5 class="mb-0">Output</h5>
+                <div class="d-flex align-items-center">
+                  <span id="json-status" class="me-2"></span>
+                  <button
+                    class="btn btn-sm btn-secondary me-2"
+                    id="btn-minify-json"
+                  >
+                    <i class="bi bi-arrows-angle-contract me-1"></i> Minify
+                  </button>
+                  <button class="btn btn-sm btn-success" id="btn-copy-json">
+                    <i class="bi bi-clipboard me-1"></i> Copy
+                  </button>
+                </div>
+              </div>
+              <pre id="json-output" class="border"></pre>
+            </div>
+          </div>
+        </div>
+        <!-- Markdown Tool Pane -->
+        <div
+          class="tab-pane fade"
+          id="markdown-tool-pane"
+          role="tabpanel"
+          aria-labelledby="markdown-tool-tab"
+          tabindex="0"
+        >
+          <div class="row">
+            <div class="col-md-6">
+              <div
+                class="d-flex justify-content-between align-items-center mb-2"
+              >
+                <h5 class="mb-0">Enter Markdown</h5>
+                <button class="btn btn-sm btn-danger" id="btn-clear-markdown">
+                  <i class="bi bi-x-lg me-1"></i> Clear
+                </button>
+              </div>
+              <textarea
+                class="form-control"
+                id="markdown-input"
+                style="height: 78vh; font-family: var(--font-mono)"
+                placeholder="Enter Markdown here..."
+              ></textarea>
+            </div>
+            <div class="col-md-6">
+              <h5 class="mb-2">Preview</h5>
+              <div
+                id="markdown-output"
+                class="border p-3"
+                style="height: 78vh; overflow-y: auto"
+              ></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer class="container-fluid text-center p-4 mt-auto">
+      <small class="text-muted"
+        >Copyright © 2025 ching lee. All rights reserved.</small
+      >
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous"
+    ></script>
+    <script src="js/theme.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/rag-viewer.js"></script>
+    <script src="js/json-tool.js"></script>
+    <script src="js/markdown-tool.js"></script>
+  </body>
+</html>
