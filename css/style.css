@@ -101,8 +101,7 @@ body {
 
 /* Focus styles */
 *:focus {
-  outline: 2px solid var(--theme-accent);
-  outline-offset: 2px;
+  outline: none !important;
 }
 
 /* ================================== */
@@ -248,11 +247,7 @@ body {
   transition: all var(--transition-normal);
   overflow: hidden;
 }
-
-.modern-card:hover {
-  box-shadow: var(--shadow-xl);
-  transform: translateY(-2px);
-}
+/* 移除卡片 hover 跳動效果 */
 
 .modern-card-header {
   background: transparent;
