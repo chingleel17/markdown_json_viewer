@@ -9,9 +9,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const clearBtn = document.getElementById("btn-clear-json");
   const jsonStatus = document.getElementById("json-status");
   const jsonErrorMessage = document.getElementById("json-error-message");
-  const actionFormatRadio = document.getElementById("json-action-format");
-  const textModeRadio = document.getElementById("text-mode");
-  const treeModeRadio = document.getElementById("tree-mode");
+  const actionSelect = document.getElementById("json-action-select");
+  const viewModeSelect = document.getElementById("json-view-mode-select");
   const jsonLineNumbers = document.getElementById("json-line-numbers");
 
   let currentJSON = null;
@@ -114,14 +113,14 @@ document.addEventListener("DOMContentLoaded", () => {
   function updateDisplay() {
     if (!currentJSON) return;
 
-    const action = actionFormatRadio.checked ? "format" : "schema";
+    const action = actionSelect.value;
     let displayData = currentJSON;
 
     if (action === "schema") {
       displayData = generateSchema(currentJSON);
     }
 
-    if (textModeRadio.checked) {
+    if (viewModeSelect.value === "text") {
       jsonOutput.style.display = "block";
       jsonTreeOutput.style.display = "none";
       const formatted = JSON.stringify(displayData, null, 2);
@@ -230,26 +229,23 @@ document.addEventListener("DOMContentLoaded", () => {
     const { isValid } = validateAndUpdate(jsonInput.value);
     if (isValid) {
       updateDisplay();
-      const activeOutput = textModeRadio.checked ? jsonOutput : jsonTreeOutput;
+      const activeOutput =
+        viewModeSelect.value === "text" ? jsonOutput : jsonTreeOutput;
       triggerGlow(activeOutput);
     }
   });
 
-  // View mode change listeners
-  textModeRadio.addEventListener("change", updateDisplay);
-  treeModeRadio.addEventListener("change", updateDisplay);
-  actionFormatRadio.addEventListener("change", updateDisplay);
-  document
-    .getElementById("json-action-schema")
-    .addEventListener("change", updateDisplay);
+  // View mode and action change listeners
+  viewModeSelect.addEventListener("change", updateDisplay);
+  actionSelect.addEventListener("change", updateDisplay);
 
   minifyBtn.addEventListener("click", () => {
     if (currentJSON) {
-      const action = actionFormatRadio.checked ? "format" : "schema";
+      const action = actionSelect.value;
       const displayData =
         action === "schema" ? generateSchema(currentJSON) : currentJSON;
 
-      if (textModeRadio.checked) {
+      if (viewModeSelect.value === "text") {
         jsonOutput.style.display = "block";
         jsonTreeOutput.style.display = "none";
         const minified = JSON.stringify(displayData);
@@ -263,10 +259,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const originalText = copyBtn.innerHTML;
     let textToCopy = "";
 
-    if (textModeRadio.checked && jsonOutput.textContent) {
+    if (viewModeSelect.value === "text" && jsonOutput.textContent) {
       textToCopy = jsonOutput.textContent;
-    } else if (treeModeRadio.checked && currentJSON) {
-      const action = actionFormatRadio.checked ? "format" : "schema";
+    } else if (viewModeSelect.value === "tree" && currentJSON) {
+      const action = actionSelect.value;
       const displayData =
         action === "schema" ? generateSchema(currentJSON) : currentJSON;
       textToCopy = JSON.stringify(displayData, null, 2);

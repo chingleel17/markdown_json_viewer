@@ -141,7 +141,7 @@
           tabindex="0"
         >
           <div class="modern-card">
-            <div class="modern-card-header px-4 py-3">
+            <div class="modern-card-header px-4 py-3 position-relative">
               <div class="card-title-wrapper">
                 <h5 class="card-title mb-0 d-flex align-items-center">
                   <i class="bi bi-braces me-2 text-primary"></i>
@@ -152,98 +152,18 @@
                   Schema。所有操作都在您的瀏覽器本地進行，確保資料的絕對安全。
                 </p>
               </div>
+              <!-- 全螢幕按鈕放右上角 -->
+              <button
+                class="btn btn-outline-secondary btn-sm position-absolute"
+                id="fullscreen-toggle"
+                title="全螢幕模式"
+                style="top: 16px; right: 24px; z-index: 10"
+              >
+                <i class="bi bi-arrows-fullscreen me-1"></i>
+                全螢幕
+              </button>
             </div>
             <div class="modern-card-body p-2">
-              <!-- Control Panel at Top -->
-              <div class="json-control-panel mb-2 p-2">
-                <div class="row g-3 align-items-end">
-                  <div class="col-md-4">
-                    <label class="form-label mb-2">
-                      <i class="bi bi-gear me-1"></i>
-                      處理動作
-                    </label>
-                    <div class="d-flex gap-3 align-items-center">
-                      <div class="form-check mb-0">
-                        <input
-                          class="form-check-input"
-                          type="radio"
-                          name="json-action"
-                          id="json-action-format"
-                          value="format"
-                          checked
-                        />
-                        <label
-                          class="form-check-label d-flex align-items-center"
-                          for="json-action-format"
-                        >
-                          <i class="bi bi-code-square me-1"></i>
-                          格式化
-                        </label>
-                      </div>
-                      <div class="form-check mb-0">
-                        <input
-                          class="form-check-input"
-                          type="radio"
-                          name="json-action"
-                          id="json-action-schema"
-                          value="schema"
-                        />
-                        <label
-                          class="form-check-label d-flex align-items-center"
-                          for="json-action-schema"
-                        >
-                          <i class="bi bi-diagram-3 me-1"></i>
-                          JSON Schema
-                        </label>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-md-4">
-                    <label class="form-label mb-2">
-                      <i class="bi bi-eye me-1"></i>
-                      顯示模式
-                    </label>
-                    <div class="btn-group w-100" role="group">
-                      <input
-                        type="radio"
-                        class="btn-check"
-                        name="json-view-mode"
-                        id="text-mode"
-                        value="text"
-                        checked
-                      />
-                      <label
-                        class="btn btn-outline-primary btn-sm"
-                        for="text-mode"
-                      >
-                        <i class="bi bi-file-text me-1"></i>
-                        Text
-                      </label>
-                      <input
-                        type="radio"
-                        class="btn-check"
-                        name="json-view-mode"
-                        id="tree-mode"
-                        value="tree"
-                      />
-                      <label
-                        class="btn btn-outline-primary btn-sm"
-                        for="tree-mode"
-                      >
-                        <i class="bi bi-diagram-2 me-1"></i>
-                        Tree
-                      </label>
-                    </div>
-                  </div>
-                  <div class="col-md-4 text-end">
-                    <button class="btn btn-primary me-2" id="btn-process-json">
-                      <i class="bi bi-arrow-right me-2"></i>
-                      處理
-                    </button>
-                  </div>
-                </div>
-              </div>
-
               <!-- Input and Output Row -->
               <div class="row g-4">
                 <!-- Input Column -->
@@ -257,6 +177,24 @@
                         輸入
                       </h6>
                       <div class="d-flex align-items-center gap-2">
+                        <!-- 處理動作下拉選單 -->
+                        <div class="d-flex align-items-center">
+                          <label
+                            for="json-action-select"
+                            class="form-label me-2 mb-0 small"
+                          >
+                            <i class="bi bi-gear me-1"></i>
+                            動作
+                          </label>
+                          <select
+                            class="form-select form-select-sm"
+                            id="json-action-select"
+                            style="width: auto"
+                          >
+                            <option value="format" selected>格式化</option>
+                            <option value="schema">JSON Schema</option>
+                          </select>
+                        </div>
                         <span id="json-status" class="status-indicator"></span>
                         <button
                           class="btn btn-sm btn-outline-danger"
@@ -298,6 +236,31 @@
                         輸出
                       </h6>
                       <div class="d-flex align-items-center gap-2">
+                        <!-- 顯示模式下拉選單 -->
+                        <div class="d-flex align-items-center">
+                          <label
+                            for="json-view-mode-select"
+                            class="form-label me-2 mb-0 small"
+                          >
+                            <i class="bi bi-eye me-1"></i>
+                            模式
+                          </label>
+                          <select
+                            class="form-select form-select-sm"
+                            id="json-view-mode-select"
+                            style="width: auto"
+                          >
+                            <option value="text" selected>Text</option>
+                            <option value="tree">Tree</option>
+                          </select>
+                        </div>
+                        <button
+                          class="btn btn-primary btn-sm"
+                          id="btn-process-json"
+                        >
+                          <i class="bi bi-arrow-right me-2"></i>
+                          處理
+                        </button>
                         <button
                           class="btn btn-sm btn-outline-secondary"
                           id="btn-minify-json"
