@@ -900,20 +900,22 @@ body.fullscreen-mode .json-intro-section {
 }
 
 body.fullscreen-mode main {
-  padding-top: 1rem !important;
   height: 100vh;
   max-width: none !important;
   margin: 0 !important;
 }
 
 body.fullscreen-mode .modern-card {
-  height: 100vh;
+  height: calc(100vh - 1rem);
   border-radius: 0;
   box-shadow: none;
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
 }
-
+body.fullscreen-mode .card-subtitle,
+body.fullscreen-mode footer {
+  display: none;
+}
 body.fullscreen-mode .modern-card-body {
   height: calc(100vh - 2rem);
   padding: 1rem !important;
@@ -927,7 +929,7 @@ body.fullscreen-mode .output-section {
 body.fullscreen-mode .json-editor-wrapper,
 body.fullscreen-mode .markdown-editor-modern,
 body.fullscreen-mode .modern-output-wrapper {
-  height: 100% !important;
+  height: 85% !important;
 }
 
 body.fullscreen-mode .json-textarea,
@@ -952,9 +954,4 @@ body.fullscreen-mode .json-tree-output {
 
 #fullscreen-toggle.fullscreen-active i::before {
   content: "\f24d"; /* bi-arrows-angle-contract icon */
-}
-
-#fullscreen-toggle.fullscreen-active::before {
-  content: "退出全螢幕";
-  margin-right: 0.5rem;
 }

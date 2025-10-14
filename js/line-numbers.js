@@ -43,13 +43,41 @@ class LineNumberManager {
     const lines = text.split("\n");
     const totalLines = Math.max(lines.length, 1);
 
-    // 生成行數文字
-    const lineNumbersText = Array.from(
-      { length: totalLines },
-      (_, i) => i + 1
-    ).join("\n");
+    // 計算每一行的實際顯示行數（考慮 wrap）
+    const dummy = document.createElement("div");
+    dummy.style.position = "absolute";
+    dummy.style.visibility = "hidden";
+    dummy.style.whiteSpace = "pre-wrap";
+    dummy.style.fontFamily =
+      this.textarea.style.fontFamily ||
+      window.getComputedStyle(this.textarea).fontFamily;
+    dummy.style.fontSize =
+      this.textarea.style.fontSize ||
+      window.getComputedStyle(this.textarea).fontSize;
+    dummy.style.lineHeight =
+      this.textarea.style.lineHeight ||
+      window.getComputedStyle(this.textarea).lineHeight;
+    dummy.style.width = this.textarea.clientWidth + "px";
+    document.body.appendChild(dummy);
 
-    this.lineNumbers.textContent = lineNumbersText;
+    let lineNumbersArr = [];
+    for (let i = 0; i < lines.length; i++) {
+      dummy.textContent = lines[i] || " ";
+      const dummyHeight = dummy.scrollHeight;
+      const lineHeight = parseFloat(
+        window.getComputedStyle(this.textarea).lineHeight
+      );
+      const wrapCount = Math.max(1, Math.round(dummyHeight / lineHeight));
+      lineNumbersArr.push((i + 1).toString());
+      if (wrapCount > 1) {
+        for (let w = 1; w < wrapCount; w++) {
+          lineNumbersArr.push("-");
+        }
+      }
+    }
+    document.body.removeChild(dummy);
+
+    this.lineNumbers.textContent = lineNumbersArr.join("\n");
 
     // 動態調整寬度
     const maxDigits = totalLines.toString().length;
