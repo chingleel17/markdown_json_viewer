@@ -1,67 +1,84 @@
-# DevTools Box - 純前端開發者工具箱
+# 開發者工具箱 | DevTools Box
 
-## 1. 專案願景 (Project Vision)
+現代化開發者工具箱 - JSON 格式化、Markdown 預覽、文檔檢視器
 
-打造一個基於純 HTML/JS/CSS 的輕量、高效、安全，完全在瀏覽器端運行的多功能開發者工具網站。使用者無需上傳文件到伺服器，即可在本地快速處理與預覽多種開發常用資料格式，確保資料的隱私與安全。
+## 功能特色
 
-本專案採用分頁式設計，整合了多個獨立的工具。
+- **JSON 工具**: 格式化、驗證、壓縮 JSON，生成 JSON Schema
+- **Markdown 預覽**: 即時預覽 Markdown 文件
+- **Document 檢視器**: 檢視和搜尋 RAG 資料集
+- **主題切換**: 支援明/暗主題
+- **本地處理**: 所有操作均在瀏覽器本地進行，保障資料安全
 
-## 2. 技術棧 (Tech Stack)
+## 技術栈
 
-*   **HTML**: 單一的 `index.html` 檔案。
-*   **CSS**: Bootstrap 5 (透過 CDN 引入) +少量客製化 `style.css`。
-*   **JavaScript**: 純 JavaScript (Vanilla JS)，不使用任何前端框架。
+- **Vite**: 極速開發與打包工具
+- **TypeScript**: 類型安全的 JavaScript
+- **Bootstrap 5**: 響應式 UI 框架
+- **Marked.js**: Markdown 解析器
 
-## 3. 需求規格
+## 開發流程
 
----
+```bash
+# 安裝依賴
+npm install
 
-### 工具一：RAG 系統資料區塊檢視器
+# 啟動開發伺服器
+npm run dev
 
-#### 3.1.1. 功能
+# 打包生產版本
+npm run build
 
-*   **資料輸入**:
-    *   支援貼上 JSON 文字或載入 `.json` 檔案。
-    *   JSON 格式必須為一個陣列，其中每個物件包含 `pageContent` (字串) 和 `metadata` (物件)。
-*   **介面佈局**:
-    *   **區塊列表**: 顯示所有資料區塊的簡略資訊 (如 `metadata.source` 和 `pageContent` 的開頭)。
-    *   **內容檢視**: 顯示選定區塊的完整 `pageContent`。
-    *   **元資料檢視**: 以美化後的 JSON 格式顯示選定區塊的 `metadata`。
-*   **互動功能**:
-    *   對 `pageContent` 進行即時全文檢索與篩選。
-    *   點擊列表項目時，同步更新內容和元資料的顯示。
-    *   提供一鍵複製 `pageContent` 和 `metadata` 的功能。
-    *   在 `pageContent` 中高亮搜尋的關鍵字。
+# 預覽生產版本
+npm run preview
+```
 
----
+## Cloudflare Pages 部署
 
-### 工具二：JSON 工具
+### 使用 Wrangler CLI
 
-#### 3.1.2. 功能
+```bash
+# 安裝 Wrangler
+npm install -g wrangler
 
-*   **資料輸入**:
-    *   提供一個大型文字編輯區，讓使用者貼上或輸入 JSON 字串。
-*   **主要操作**:
-    *   **格式化/美化**: 將雜亂的 JSON 字串整理成具有良好縮排的易讀格式。
-    *   **壓縮/最小化**: 移除 JSON 字串中所有多餘的空白和換行。
-    *   **語法校驗**: 提示使用者輸入的字串是否為合法的 JSON。
-*   **互動功能**:
-    *   提供「一鍵複製」格式化後內容的功能。
-    *   提供「一鍵清空」編輯區的功能。
-    *   (可選) 顯示 JSON 的樹狀圖檢視。
+# 登入 Cloudflare
+wrangler login
 
----
+# 打包專案
+npm run build
 
-### 工具三：Markdown 即時預覽器
+# 部署到 Cloudflare Pages
+npx wrangler pages deploy dist
+```
 
-#### 3.1.3. 功能
+### 使用 Git 整合
 
-*   **介面佈局**:
-    *   採用雙欄佈局。
-    *   **左側**: 使用者輸入 Markdown 語法的文字編輯區。
-    *   **右側**: 即時顯示渲染後的 HTML 結果。
-*   **核心功能**:
-    *   當使用者在左側編輯區輸入時，右側的預覽畫面需要即時更新。
-    *   支援所有標準的 Markdown 語法 (標題、列表、粗體、斜體、連結、圖片、程式碼區塊等)。
-*   **互動功能**:
-    *   (可選) 提供常用 Markdown 語法的快捷工具列按鈕 (例如：點擊按鈕插入粗體語法)。
+1. 將專案推送到 GitHub
+2. 在 Cloudflare Pages 連接 GitHub 儲存庫
+3. 設定構建指令: `npm run build`
+4. 設定輸出目錄: `dist`
+
+## 目錄結構
+
+```
+.
+├── src/
+│   ├── main.ts           # 主入口
+│   ├── style.css         # 全域樣式
+│   ├── theme.ts          # 主題切換
+│   ├── line-numbers.ts   # 行號功能
+│   ├── json-tool.ts      # JSON 工具
+│   ├── markdown-tool.ts  # Markdown 工具
+│   └── document-viewer.ts # 文檔檢視器
+├── public/
+│   ├── favicon.ico
+│   └── manifest.json
+├── index.html
+├── package.json
+├── vite.config.ts
+└── tsconfig.json
+```
+
+## License
+
+Copyright © 2025 ching lee. All rights reserved.
