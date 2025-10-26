@@ -234,7 +234,7 @@ watch([action, viewMode], () => {
                             <div class="d-flex align-items-center gap-2">
                                 <h6 class="section-title mb-0 d-flex align-items-center">
                                     <i class="bi bi-pencil-square me-2"></i>
-                                    輸入
+                                    輸入JSON
                                 </h6>
                                 <span v-if="jsonStatus" :class="['badge', isValid ? 'bg-success' : 'bg-danger']">
                                     {{ jsonStatus }}

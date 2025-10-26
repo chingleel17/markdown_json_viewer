@@ -15,7 +15,7 @@ onMounted(() => {
 </script>
 
 <template>
-    <button class="btn modern-icon-btn me-3 d-flex align-items-center justify-content-center" @click="toggleTheme"
+    <button class="btn modern-icon-btn d-flex align-items-center justify-content-center" @click="toggleTheme"
         title="切換主題">
         <i :class="theme === 'dark' ? 'bi bi-moon-fill' : 'bi bi-sun-fill'"></i>
     </button>

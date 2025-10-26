@@ -74,6 +74,7 @@ defineExpose({
 
 .modern-card {
     transition: all 0.3s ease;
+    animation: fadeInUp 0.4s ease-out;
 }
 
 .modern-card.fullscreen-mode {
@@ -95,6 +96,15 @@ defineExpose({
 .modern-card.fullscreen-mode .modern-card-body {
     /* height: calc(100vh - 90px); */
     overflow-y: auto;
+}
+
+.modern-card-header {
+    border-bottom: 1px solid var(--theme-border);
+    background: transparent;
+}
+
+.modern-card-body {
+    background: var(--theme-bg-card);
 }
 
 .fullscreen-active {

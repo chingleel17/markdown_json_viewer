@@ -8,7 +8,7 @@ import ThemeSwitcher from './components/ThemeSwitcher.vue'
 const activeTab = ref('json')
 </script>
 <template>
-  <header class="modern-header p-2 mb-3 sticky-top">
+  <header class="modern-header p-2 sticky-top">
     <div class="container-fluid">
       <div class="d-flex flex-wrap align-items-center justify-content-between">
         <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-decoration-none brand-link">
@@ -61,8 +61,7 @@ const activeTab = ref('json')
     </div>
   </header>
 
-  <main class="container-fluid flex-grow-1"
-    style="max-width: 1600px; margin: 0 auto; padding-left: 0.5rem; padding-right: 0.5rem;">
+  <main class="container-fluid flex-grow-1 p-2" style="max-width: 1600px;">
     <JsonTool v-if="activeTab === 'json'" />
     <MarkdownTool v-if="activeTab === 'markdown'" />
     <DocumentViewer v-if="activeTab === 'document'" />
@@ -75,7 +74,7 @@ const activeTab = ref('json')
 
 <style scoped>
 .modern-header {
-  background: var(--theme-bg-card);
+  background: var(--theme-bg-header);
   border-bottom: 1px solid var(--theme-border);
   box-shadow: var(--shadow-sm);
 }
