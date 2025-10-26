@@ -7,11 +7,11 @@
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc -b && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "postinstall": "npm install -g npm@9"
   },
   "dependencies": {
     "marked": "16.4.1",
-    "rollup": "4.52.5",
     "vue": "3.5.22"
   },
   "devDependencies": {
