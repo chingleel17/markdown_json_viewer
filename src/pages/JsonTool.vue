@@ -12,6 +12,7 @@ const jsonStatus = ref('')
 const jsonError = ref('')
 const action = ref('format')
 const viewMode = ref('text')
+const isMinified = ref(false)
 let currentJSON: any = null
 
 const isValid = computed(() => {
@@ -146,6 +147,7 @@ function bindTreeToggles() {
 
 function processJSON() {
     if (!validateJSON()) return
+    isMinified.value = false
     updateDisplay()
 }
 
@@ -183,10 +185,51 @@ async function copyJSON() {
 }
 
 function minifyJSON() {
-    if (currentJSON) {
+    // 驗證必須有效
+    if (!currentJSON) {
+        alert('請先輸入並驗證有效的 JSON')
+        return
+    }
+
+    isMinified.value = !isMinified.value
+
+    if (viewMode.value === 'text') {
         const action_val = action.value === 'schema' ? generateJSONSchema(currentJSON) : currentJSON
+        if (isMinified.value) {
+            // 壓縮
         jsonOutput.value = jsonToSyntaxHTML(JSON.stringify(action_val))
-        jsonTreeOutput.value = ''
+        } else {
+            // 展開
+            jsonOutput.value = jsonToSyntaxHTML(JSON.stringify(action_val, null, 2))
+        }
+    } else {
+        // Tree 模式：展開/折疊所有節點
+        const displayData = action.value === 'schema' ? generateJSONSchema(currentJSON) : currentJSON
+        jsonTreeOutput.value = `<div class="json-tree">${createTreeView(displayData)}</div>`
+        nextTick(() => {
+            bindTreeToggles()
+            if (isMinified.value) {
+                // 壓縮：折疊所有節點
+                const children = document.querySelectorAll('.json-tree-children')
+                children.forEach(child => {
+                    child.classList.add('json-tree-collapsed')
+                })
+                const toggles = document.querySelectorAll('.json-tree-toggle')
+                toggles.forEach(toggle => {
+                    toggle.textContent = '▶'
+                })
+            } else {
+                // 展開：展開所有節點
+                const children = document.querySelectorAll('.json-tree-children')
+                children.forEach(child => {
+                    child.classList.remove('json-tree-collapsed')
+                })
+                const toggles = document.querySelectorAll('.json-tree-toggle')
+                toggles.forEach(toggle => {
+                    toggle.textContent = '▼'
+                })
+            }
+        })
     }
 }
 
@@ -215,7 +258,8 @@ function generateJSONSchema(obj: any): any {
 
 // 監聽 action 和 viewMode 變化，自動更新顯示
 watch([action, viewMode], () => {
-    if (currentJSON) {
+    if (currentJSON && isValid.value) {
+        isMinified.value = false
         updateDisplay()
     }
 })
@@ -294,8 +338,10 @@ watch([action, viewMode], () => {
                                         <i class="bi bi-diagram-2"></i> Tree
                                     </label>
                                 </div>
-                                <button class="btn btn-sm btn-outline-secondary" @click="minifyJSON" title="壓縮">
-                                    <i class="bi bi-arrows-angle-contract"></i>
+                            <button class="btn btn-sm btn-outline-secondary" @click="minifyJSON" title="壓縮/展開">
+                                <i class="bi"
+                                    :class="isMinified ? 'bi-arrows-angle-expand' : 'bi-arrows-angle-contract'"></i>
+                                {{ isMinified ? '展開' : '壓縮' }}
                                 </button>
                                 <button class="btn btn-sm btn-outline-success" @click="copyJSON" title="複製">
                                     <i class="bi bi-clipboard"></i>

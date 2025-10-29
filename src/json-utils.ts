@@ -81,11 +81,11 @@ export function removeComments(jsonString: string): string {
 export function autoFixJSON(jsonString: string): string {
     let fixed = jsonString;
 
-    // Remove trailing commas
+    // Remove trailing commas (before closing braces/brackets, including with whitespace/newlines)
     fixed = fixed.replace(/,(\s*[}\]])/g, '$1');
 
-    // Remove trailing commas before newlines
-    fixed = fixed.replace(/,(\s*\n)/g, '$1');
+    // Remove trailing commas before newlines (and optional following content)
+    fixed = fixed.replace(/,(\s*\n\s*[}\]])/g, '$1');
 
     // Ensure keys are quoted with double quotes (simple cases)
     // Only apply regex outside of string literals
