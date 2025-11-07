@@ -43,7 +43,7 @@ defineExpose({
                     <i :class="['bi', icon, 'me-2', 'text-primary']"></i>
                     {{ title }}
                 </h5>
-                <p class="card-subtitle mb-0 mt-2">
+                <p v-show="!isFullscreen" class="card-subtitle mb-0 mt-2">
                     {{ description }}
                 </p>
             </div>
@@ -73,8 +73,12 @@ defineExpose({
 }
 
 .modern-card {
+    display: flex;
+    flex-direction: column;
     transition: all 0.3s ease;
     animation: fadeInUp 0.4s ease-out;
+    height: 90vh;
+    max-height: 90vh;
 }
 
 .modern-card.fullscreen-mode {
@@ -85,6 +89,7 @@ defineExpose({
     bottom: 0;
     width: 100vw;
     height: 100vh;
+    max-height: 100vh;
     border-radius: 0;
     z-index: 9999;
     margin: 0;
@@ -94,7 +99,8 @@ defineExpose({
 }
 
 .modern-card.fullscreen-mode .modern-card-body {
-    /* height: calc(100vh - 90px); */
+    flex: 1 1 0;
+    min-height: 0;
     overflow-y: auto;
 }
 
@@ -104,7 +110,12 @@ defineExpose({
 }
 
 .modern-card-body {
+    flex: 1 1 0;
+    min-height: 0;
+    overflow: hidden;
     background: var(--theme-bg-card);
+    display: flex;
+    flex-direction: column;
 }
 
 .fullscreen-active {

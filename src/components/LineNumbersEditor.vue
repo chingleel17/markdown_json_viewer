@@ -52,7 +52,7 @@ onMounted(() => {
 </script>
 
 <template>
-    <div class="line-number-editor-wrapper d-flex">
+    <div class="line-number-editor-wrapper d-flex h-100">
         <div v-if="showLineNumbers" ref="lineNumbers" class="line-numbers-column p-3">{{ lineNumbersText }}</div>
         <textarea ref="textarea" :value="modelValue" @input="handleInput" @scroll="handleScroll"
             class="form-control json-textarea p-3" :placeholder="placeholder" spellcheck="false"></textarea>
@@ -65,7 +65,7 @@ onMounted(() => {
     overflow: hidden;
     border: 1px solid var(--theme-border);
     background: var(--theme-bg-card);
-    height: 75vh;
+    height: 100%;
 }
 
 .line-numbers-column {

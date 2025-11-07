@@ -229,19 +229,6 @@ body {
   position: relative;
 }
 
-/* .line-numbers-column {
-  background: var(--theme-bg-solid);
-  color: #94a3b8;
-  font-family: "JetBrains Mono", monospace;
-  font-size: 14px;
-  line-height: 1.6;
-  text-align: right;
-  user-select: none;
-  border-right: 1px solid var(--theme-border);
-  width: 60px;
-  overflow: hidden;
-} */
-
 .json-textarea,
 .markdown-textarea {
   flex: 1;

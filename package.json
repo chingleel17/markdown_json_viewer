@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "marked": "16.4.1",
+    "sweetalert2": "^11.26.3",
     "vue": "3.5.22"
   },
   "devDependencies": {
