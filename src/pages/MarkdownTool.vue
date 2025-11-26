@@ -4,10 +4,12 @@ import { marked } from 'marked'
 import LineNumbersEditor from '../components/LineNumbersEditor.vue'
 import ToolWrapper from '../components/ToolWrapper.vue'
 import Switch from '../components/Switch.vue'
+import ResizableSplitPane from '../components/ResizableSplitPane.vue'
 
 const markdownInput = ref('')
 const markdownOutput = ref('')
 const syncScroll = ref(true)
+const splitRatio = ref(50)
 const previewContainer = ref<HTMLDivElement>()
 
 watch(markdownInput, async (newVal) => {
@@ -46,11 +48,11 @@ function handlePreviewScroll(e: Event) {
 
 <template>
     <ToolWrapper title="Markdown 預覽器" icon="bi-markdown" description="即時預覽 Markdown 文件。您的所有輸入都只在瀏覽器中處理，絕不外洩。">
-        <div class="row g-3 h-100">
-            <div class="col-md-6">
-                <div class="input-section d-flex flex-column h-100">
+        <ResizableSplitPane v-model="splitRatio" :min-size="300">
+            <template #first>
+                <div class="input-section d-flex flex-column h-100 pe-2">
                     <div class="d-flex justify-content-between align-items-center"
-                        style="height: auto; margin-bottom: 0.5rem;">
+                        style="height: 32px; margin-bottom: 0.5rem;">
                         <h6 class="section-title mb-0 d-flex align-items-center">
                             <i class="bi bi-pencil-square me-2"></i>
                             輸入 Markdown
@@ -64,11 +66,11 @@ function handlePreviewScroll(e: Event) {
                             @scroll="handleInputScroll" />
                     </div>
                 </div>
-            </div>
-            <div class="col-md-6">
-                <div class="output-section d-flex flex-column h-100">
+            </template>
+            <template #second>
+                <div class="output-section d-flex flex-column h-100 ps-2">
                     <div class="d-flex justify-content-between align-items-center"
-                        style="height: auto; margin-bottom: 0.5rem;">
+                        style="height: 32px; margin-bottom: 0.5rem;">
                         <h6 class="section-title mb-0 d-flex align-items-center">
                             <i class="bi bi-eye me-2"></i>
                             預覽
@@ -87,7 +89,7 @@ function handlePreviewScroll(e: Event) {
                             v-html="markdownOutput" @scroll="handlePreviewScroll"></div>
                     </div>
                 </div>
-            </div>
-        </div>
+            </template>
+        </ResizableSplitPane>
     </ToolWrapper>
 </template>

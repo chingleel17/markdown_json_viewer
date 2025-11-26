@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <defs>
+    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6366f1" />
+      <stop offset="100%" stop-color="#a855f7" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="64" height="64" rx="16" fill="url(#grad)" />
+
+  <!-- Center Group -->
+  <g transform="translate(32, 32)">
+
+    <!-- Screwdriver: Diagonal TL to BR (Rotate -45) -->
+    <g transform="rotate(-45)">
+       <!-- Tip (Extended to -27) -->
+       <path d="M-1.5 -23 L-2.5 -15 L2.5 -15 L1.5 -23 L0 -27 Z" fill="white" />
+       <!-- Shaft (Extended to connect tip and handle) -->
+       <rect x="-2" y="-16" width="4" height="24" fill="white" />
+       <!-- Handle (Moved down to end at 25) -->
+       <path d="M-5 7 L-5 20 C-5 22.5 -3 25 0 25 C3 25 5 22.5 5 20 L5 7 Z" fill="white" />
+       <!-- Handle Details (Shifted down) -->
+       <rect x="-4" y="10" width="8" height="1.5" rx="0.5" fill="url(#grad)" fill-opacity="0.5" />
+       <rect x="-4" y="14" width="8" height="1.5" rx="0.5" fill="url(#grad)" fill-opacity="0.5" />
+       <rect x="-4" y="18" width="8" height="1.5" rx="0.5" fill="url(#grad)" fill-opacity="0.5" />
+    </g>
+
+    <!-- Wrench: Diagonal TR to BL (Rotate 45) -->
+    <g transform="rotate(45)">
+       <!-- Handle Body -->
+       <rect x="-3" y="-15" width="6" height="35" rx="2" fill="white" />
+
+       <!-- Bottom Ring -->
+       <circle cx="0" cy="20" r="5" fill="white" />
+       <circle cx="0" cy="20" r="3" fill="url(#grad)" />
+
+       <!-- Wrench Head - Solid Circle -->
+       <circle cx="0" cy="-19" r="8" fill="white" />
+
+       <!-- Cut out the top opening area -->
+       <rect x="-3" y="-29" width="6" height="10" fill="url(#grad)" />
+    </g>
+
+  </g>
+</svg>

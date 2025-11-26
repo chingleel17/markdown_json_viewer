@@ -4,6 +4,7 @@ import { ref, computed, watch, nextTick } from 'vue'
 import LineNumbersEditor from '../components/LineNumbersEditor.vue'
 import ToolWrapper from '../components/ToolWrapper.vue'
 import ConvertButton from '../components/ConvertButton.vue'
+import ResizableSplitPane from '../components/ResizableSplitPane.vue'
 import { validateAndParseJSON, attemptJSONRepair } from '../json-utils'
 
 const jsonInput = ref('')
@@ -14,6 +15,7 @@ const jsonError = ref('')
 const action = ref('format')
 const viewMode = ref('text')
 const isMinified = ref(false)
+const splitRatio = ref(50)
 let currentJSON: any = null
 
 const isValid = computed(() => {
@@ -305,97 +307,100 @@ watch([action, viewMode], () => {
     <ToolWrapper title="JSON 工具" icon="bi-braces"
         description="格式化、驗證、壓縮 JSON，或從 JSON 生成 JSON Schema。所有操作都在您的瀏覽器本地進行，確保資料的絕對安全。">
         <!-- Input and Output -->
-        <div class="position-relative row g-3 h-100">
-            <!-- Left: Input -->
-            <div class="col-md-6">
-                <div class="input-section d-flex flex-column h-100">
-                    <div class="d-flex justify-content-between align-items-center mb-2">
-                        <div class="d-flex align-items-center gap-2">
-                            <h6 class="section-title mb-0 d-flex align-items-center">
-                                <i class="bi bi-pencil-square me-2"></i>
-                                輸入JSON
-                            </h6>
-                            <span v-if="jsonStatus" :class="['badge', isValid ? 'bg-success' : 'bg-danger']">
-                                {{ jsonStatus }}
-                            </span>
-                        </div>
-                        <div class="d-flex align-items-center gap-2">
-                            <!-- 處理動作 -->
-                            <div class="btn-group btn-group-sm" role="group">
-                                <input type="radio" class="btn-check" v-model="action" value="format"
-                                    id="json-action-format" />
-                                <label class="btn btn-outline-primary" for="json-action-format" title="格式化">
-                                    <i class="bi bi-code-square"></i> Format
-                                </label>
-                                <input type="radio" class="btn-check" v-model="action" value="schema"
-                                    id="json-action-schema" />
-                                <label class="btn btn-outline-primary" for="json-action-schema" title="JSON Schema">
-                                    <i class="bi bi-diagram-3"></i> Schema
-                                </label>
+        <div class="position-relative h-100">
+            <ResizableSplitPane v-model="splitRatio" :min-size="300">
+                <template #first>
+                    <div class="input-section d-flex flex-column h-100 pe-2">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <div class="d-flex align-items-center gap-2">
+                                <h6 class="section-title mb-0 d-flex align-items-center">
+                                    <i class="bi bi-pencil-square me-2"></i>
+                                    輸入JSON
+                                </h6>
+                                <span v-if="jsonStatus" :class="['badge', isValid ? 'bg-success' : 'bg-danger']">
+                                    {{ jsonStatus }}
+                                </span>
                             </div>
-                            <button class="btn btn-sm btn-outline-warning" @click="autoFixJSONInput"
-                                title="自動修復 JSON 格式和移除註解">
-                                <i class="bi bi-tools"></i> 修復
-                            </button>
-                            <button class="btn btn-sm btn-outline-danger" @click="clearJSON" title="清除">
-                                <i class="bi bi-x-lg"></i>清除
-                            </button>
+                            <div class="d-flex align-items-center gap-2">
+                                <!-- 處理動作 -->
+                                <div class="btn-group btn-group-sm" role="group">
+                                    <input type="radio" class="btn-check" v-model="action" value="format"
+                                        id="json-action-format" />
+                                    <label class="btn btn-outline-primary" for="json-action-format" title="格式化">
+                                        <i class="bi bi-code-square"></i> Format
+                                    </label>
+                                    <input type="radio" class="btn-check" v-model="action" value="schema"
+                                        id="json-action-schema" />
+                                    <label class="btn btn-outline-primary" for="json-action-schema" title="JSON Schema">
+                                        <i class="bi bi-diagram-3"></i> Schema
+                                    </label>
+                                </div>
+                                <button class="btn btn-sm btn-outline-warning" @click="autoFixJSONInput"
+                                    title="自動修復 JSON 格式和移除註解">
+                                    <i class="bi bi-tools"></i> 修復
+                                </button>
+                                <button class="btn btn-sm btn-outline-danger" @click="clearJSON" title="清除">
+                                    <i class="bi bi-x-lg"></i>清除
+                                </button>
+                            </div>
+                        </div>
+                        <div class="flex-grow-1 min-h-0">
+                            <LineNumbersEditor v-model="jsonInput" @input="validateJSON"
+                                placeholder="在這裡貼上您的 JSON..." />
+                        </div>
+                        <div v-if="jsonError" class="mt-2" style="min-height: 1.5rem">
+                            <div class="error-message py-2 small">{{ jsonError }}</div>
                         </div>
                     </div>
-                    <div class="flex-grow-1 min-h-0">
-                        <LineNumbersEditor v-model="jsonInput" @input="validateJSON" placeholder="在這裡貼上您的 JSON..." />
-                    </div>
-                    <div v-if="jsonError" class="mt-2" style="min-height: 1.5rem">
-                        <div class="error-message py-2 small">{{ jsonError }}</div>
-                    </div>
-                </div>
-            </div>
+                </template>
 
-            <!-- Right: Output -->
-            <div class="col-md-6">
-                <div class="output-section d-flex flex-column h-100">
-                    <div class="d-flex justify-content-between align-items-center mb-2">
-                        <div class="d-flex align-items-center gap-2">
-                            <h6 class="section-title mb-0 d-flex align-items-center">
-                                <i class="bi bi-file-code me-2"></i>
-                                輸出
-                            </h6>
-                        </div>
-                        <div class="d-flex align-items-center gap-2">
-                            <!-- 顯示模式 -->
-                            <div class="btn-group btn-group-sm" role="group">
-                                <input type="radio" class="btn-check" v-model="viewMode" value="text" id="text-mode" />
-                                <label class="btn btn-outline-primary" for="text-mode" title="Text 模式">
-                                    <i class="bi bi-file-text"></i> Text
-                                </label>
-                                <input type="radio" class="btn-check" v-model="viewMode" value="tree" id="tree-mode" />
-                                <label class="btn btn-outline-primary" for="tree-mode" title="Tree 模式">
-                                    <i class="bi bi-diagram-2"></i> Tree
-                                </label>
+                <template #second>
+                    <div class="output-section d-flex flex-column h-100 ps-2">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <div class="d-flex align-items-center gap-2">
+                                <h6 class="section-title mb-0 d-flex align-items-center">
+                                    <i class="bi bi-file-code me-2"></i>
+                                    輸出
+                                </h6>
                             </div>
-                            <button class="btn btn-sm btn-outline-secondary" @click="minifyJSON" title="壓縮/展開">
-                                <i class="bi"
-                                    :class="isMinified ? 'bi-arrows-angle-expand' : 'bi-arrows-angle-contract'"></i>
-                                {{ isMinified ? '展開' : '壓縮' }}
-                            </button>
-                            <button class="btn btn-sm btn-outline-success" @click="copyJSON" title="複製">
-                                <i class="bi bi-clipboard"></i>
-                            </button>
+                            <div class="d-flex align-items-center gap-2">
+                                <!-- 顯示模式 -->
+                                <div class="btn-group btn-group-sm" role="group">
+                                    <input type="radio" class="btn-check" v-model="viewMode" value="text"
+                                        id="text-mode" />
+                                    <label class="btn btn-outline-primary" for="text-mode" title="Text 模式">
+                                        <i class="bi bi-file-text"></i> Text
+                                    </label>
+                                    <input type="radio" class="btn-check" v-model="viewMode" value="tree"
+                                        id="tree-mode" />
+                                    <label class="btn btn-outline-primary" for="tree-mode" title="Tree 模式">
+                                        <i class="bi bi-diagram-2"></i> Tree
+                                    </label>
+                                </div>
+                                <button class="btn btn-sm btn-outline-secondary" @click="minifyJSON" title="壓縮/展開">
+                                    <i class="bi"
+                                        :class="isMinified ? 'bi-arrows-angle-expand' : 'bi-arrows-angle-contract'"></i>
+                                    {{ isMinified ? '展開' : '壓縮' }}
+                                </button>
+                                <button class="btn btn-sm btn-outline-success" @click="copyJSON" title="複製">
+                                    <i class="bi bi-clipboard"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="modern-output-wrapper rounded overflow-hidden flex-grow-1 min-h-0"
+                            style="box-shadow: var(--shadow-sm)">
+                            <pre v-if="viewMode === 'text'" class="modern-output p-3 m-0 h-100 overflow-y-auto"
+                                style="white-space: pre-wrap;" v-html="jsonOutput"></pre>
+                            <div v-else class="modern-output p-3 h-100 overflow-y-auto" v-html="jsonTreeOutput">
+                            </div>
                         </div>
                     </div>
-                    <div class="modern-output-wrapper rounded overflow-hidden flex-grow-1 min-h-0"
-                        style="box-shadow: var(--shadow-sm)">
-                        <pre v-if="viewMode === 'text'" class="modern-output p-3 m-0 h-100 overflow-y-auto"
-                            style="white-space: pre-wrap;" v-html="jsonOutput"></pre>
-                        <div v-else class="modern-output p-3 h-100 overflow-y-auto" v-html="jsonTreeOutput">
-                        </div>
-                    </div>
-                </div>
-            </div>
+                </template>
+            </ResizableSplitPane>
+
+            <!-- Center: Process Button (Floating) -->
+            <ConvertButton class="position-absolute top-50 translate-middle" style="z-index: 100;"
+                :style="{ left: `${splitRatio}%` }" @click="processJSON" title="轉換 JSON" />
         </div>
-        <!-- Center: Process Button (Floating) -->
-        <ConvertButton class="position-absolute top-50 start-50 translate-middle" style="z-index: 100;"
-            @click="processJSON" title="轉換 JSON" />
-
     </ToolWrapper>
 </template>
