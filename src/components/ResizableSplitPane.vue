@@ -24,6 +24,7 @@ watch(() => props.modelValue, (val) => {
 })
 
 function startDrag(e: MouseEvent | TouchEvent) {
+    e.preventDefault()
     isDragging.value = true
     document.body.style.cursor = props.direction === 'horizontal' ? 'col-resize' : 'row-resize'
     document.body.style.userSelect = 'none'
@@ -42,11 +43,11 @@ function onDrag(e: MouseEvent | TouchEvent) {
     let total = 0
 
     if (props.direction === 'horizontal') {
-        const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX
+        const clientX = 'touches' in e ? e.touches[0]?.clientX ?? 0 : e.clientX
         pos = clientX - rect.left
         total = rect.width
     } else {
-        const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY
+        const clientY = 'touches' in e ? e.touches[0]?.clientY ?? 0 : e.clientY
         pos = clientY - rect.top
         total = rect.height
     }
