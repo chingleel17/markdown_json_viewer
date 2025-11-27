@@ -37,7 +37,8 @@ defineExpose({
 
 <template>
     <div :class="['modern-card', { 'fullscreen-mode': isFullscreen }]">
-        <div class="modern-card-header px-4 py-3 position-relative">
+        <div class="modern-card-header px-4  position-relative"
+            :class="{ 'py-3': !isFullscreen, 'py-1': isFullscreen }">
             <div class="card-title-wrapper">
                 <h5 class="card-title mb-0 d-flex align-items-center">
                     <i :class="['bi', icon, 'me-2', 'text-primary']"></i>
@@ -49,7 +50,7 @@ defineExpose({
             </div>
             <!-- 全螢幕按鈕 -->
             <button class="btn btn-outline-secondary btn-sm position-absolute" @click="toggleFullscreen" title="全螢幕模式"
-                :class="{ 'fullscreen-active': isFullscreen }" style="top: 16px; right: 24px; z-index: 10">
+                :class="{ 'fullscreen-active p-1': isFullscreen }" style="top: 16px; right: 24px; z-index: 10">
                 <i :class="['bi', isFullscreen ? 'bi-arrows-fullscreen-exit' : 'bi-arrows-fullscreen', 'me-1']"></i>
                 {{ isFullscreen ? '退出全螢幕' : '全螢幕' }}
             </button>
@@ -116,6 +117,10 @@ defineExpose({
     background: var(--theme-bg-card);
     display: flex;
     flex-direction: column;
+}
+
+.modern-card-header .btn.fullscreen-active {
+    top: 3px !important;
 }
 
 .fullscreen-active {

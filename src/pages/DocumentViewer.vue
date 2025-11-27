@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import ToolWrapper from '../components/ToolWrapper.vue'
+import { useLocalStorage } from '../composables/useLocalStorage'
 
 interface DocumentChunk {
     pageContent: string
     metadata: Record<string, any>
 }
 
-const allChunks = ref<DocumentChunk[]>([])
+const allChunks = useLocalStorage<DocumentChunk[]>('document-viewer-chunks', [])
 const searchQuery = ref('')
 const selectedChunk = ref<DocumentChunk | null>(null)
 
@@ -53,7 +54,7 @@ function selectChunk(chunk: DocumentChunk) {
     selectedChunk.value = chunk
 }
 
-const ragTextInput = ref('')
+const ragTextInput = useLocalStorage('document-viewer-input', '')
 </script>
 
 <template>

@@ -53,7 +53,7 @@ onMounted(() => {
 
 <template>
     <div class="line-number-editor-wrapper d-flex h-100">
-        <div v-if="showLineNumbers" ref="lineNumbers" class="line-numbers-column p-3">{{ lineNumbersText }}</div>
+        <div v-if="showLineNumbers" ref="lineNumbers" class="line-numbers-column">{{ lineNumbersText }}</div>
         <textarea ref="textarea" :value="modelValue" @input="handleInput" @scroll="handleScroll"
             class="form-control json-textarea p-3" :placeholder="placeholder" spellcheck="false"></textarea>
     </div>
@@ -78,11 +78,16 @@ onMounted(() => {
     user-select: none;
     border-right: 1px solid var(--theme-border);
     width: 40px;
+    min-width: min-content;
     overflow: hidden;
     white-space: pre;
+    height: 100%;
+    min-height: 0;
+    padding-right: 12px;
+    padding-left: 8px;
 }
 
-.json-textarea {
+.line-number-editor-wrapper textarea {
     flex: 1;
     font-family: 'JetBrains Mono', monospace;
     font-size: 14px;
@@ -92,5 +97,16 @@ onMounted(() => {
     resize: none;
     background: var(--theme-bg-card);
     color: var(--theme-text);
+    transition: all 0.15s ease-in-out;
+}
+
+
+.line-number-editor-wrapper textarea::placeholder {
+    color: #b0b8c9;
+    opacity: 1;
+}
+
+.line-number-editor-wrapper textarea:focus {
+    outline: none;
 }
 </style>

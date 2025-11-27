@@ -6,8 +6,9 @@ import ToolWrapper from '../components/ToolWrapper.vue'
 import ConvertButton from '../components/ConvertButton.vue'
 import ResizableSplitPane from '../components/ResizableSplitPane.vue'
 import { validateAndParseJSON, attemptJSONRepair } from '../json-utils'
+import { useLocalStorage } from '../composables/useLocalStorage'
 
-const jsonInput = ref('')
+const jsonInput = useLocalStorage('json-tool-input', '')
 const jsonOutput = ref('')
 const jsonTreeOutput = ref('')
 const jsonStatus = ref('')
