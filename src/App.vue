@@ -3,6 +3,7 @@ import { ref } from 'vue'
 import JsonTool from './pages/JsonTool.vue'
 import MarkdownTool from './pages/MarkdownTool.vue'
 import DocumentViewer from './pages/DocumentViewer.vue'
+import ToonTool from './pages/ToonTool.vue'
 import ThemeSwitcher from './components/ThemeSwitcher.vue'
 
 const activeTab = ref('json')
@@ -41,6 +42,14 @@ const activeTab = ref('json')
             </li>
             <li class="nav-item">
               <button
+                :class="['nav-link', 'modern-nav-link', 'px-3', 'py-2', 'd-flex', 'align-items-center', { active: activeTab === 'toon' }]"
+                @click="activeTab = 'toon'">
+                <i class="bi bi-arrow-left-right me-2"></i>
+                <span>TOON</span>
+              </button>
+            </li>
+            <li class="nav-item">
+              <button
                 :class="['nav-link', 'modern-nav-link', 'px-3', 'py-2', 'd-flex', 'align-items-center', { active: activeTab === 'document' }]"
                 @click="activeTab = 'document'">
                 <i class="bi bi-file-text me-2"></i>
@@ -61,9 +70,10 @@ const activeTab = ref('json')
     </div>
   </header>
 
-  <main class="container-fluid flex-grow-1 p-2" style="max-width: 1600px;">
+  <main class="container-fluid flex-grow-1 p-2 d-flex flex-column" style="max-width: 1600px;">
     <JsonTool v-if="activeTab === 'json'" />
     <MarkdownTool v-if="activeTab === 'markdown'" />
+    <ToonTool v-if="activeTab === 'toon'" />
     <DocumentViewer v-if="activeTab === 'document'" />
   </main>
 

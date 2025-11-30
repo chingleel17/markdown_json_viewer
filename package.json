@@ -12,6 +12,7 @@
     "deploy": "npm ci && npm run build"
   },
   "dependencies": {
+    "@toon-format/toon": "^2.0.1",
     "marked": "16.4.1",
     "mermaid": "^11.12.1",
     "sweetalert2": "^11.26.3",

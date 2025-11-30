@@ -61,7 +61,6 @@ onMounted(() => {
 
 <style scoped>
 .line-number-editor-wrapper {
-    border-radius: 12px;
     overflow: hidden;
     border: 1px solid var(--theme-border);
     background: var(--theme-bg-card);

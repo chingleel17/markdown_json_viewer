@@ -388,7 +388,7 @@ watch([action, viewMode], () => {
                                 </button>
                             </div>
                         </div>
-                        <div class="modern-output-wrapper rounded overflow-hidden flex-grow-1 min-h-0"
+                        <div class="modern-output-wrapper overflow-hidden flex-grow-1 min-h-0"
                             style="box-shadow: var(--shadow-sm)">
                             <pre v-if="viewMode === 'text'" class="modern-output p-3 m-0 h-100 overflow-y-auto"
                                 style="white-space: pre-wrap;" v-html="jsonOutput"></pre>

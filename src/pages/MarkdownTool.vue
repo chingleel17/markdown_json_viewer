@@ -242,7 +242,7 @@ function scrollToTop() {
                             </div>
                         </div>
                     </div>
-                    <div class="modern-output-wrapper rounded overflow-hidden flex-grow-1 min-h-0 position-relative d-flex"
+                    <div class="modern-output-wrapper overflow-hidden flex-grow-1 min-h-0 position-relative d-flex"
                         style="box-shadow: var(--shadow-sm)" @mouseenter="isHoveringPreview = true"
                         @mouseleave="isHoveringPreview = false">
                         <div ref="previewContainer"
