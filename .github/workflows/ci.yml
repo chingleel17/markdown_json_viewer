@@ -1,10 +1,8 @@
-name: CI Build
+name: CI Build & Auto Merge
 
 on:
   push:
     branches: [develop]
-  pull_request:
-    branches: [main, master]
 
 jobs:
   build:
@@ -18,3 +16,21 @@ jobs:
           cache: "npm"
       - run: npm ci
       - run: npm run build
+
+  auto-merge:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/develop'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Merge develop into main
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git fetch origin develop:develop
+          git merge --no-ff develop -m "Auto-merge develop into main [skip ci]"
+          git push origin main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
