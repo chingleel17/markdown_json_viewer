@@ -20,17 +20,17 @@ jobs:
   auto-merge:
     needs: build
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/develop'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: main
-      - name: Merge develop into main
+          ref: master
+      - name: Merge develop into master
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git fetch origin develop:develop
-          git merge --no-ff develop -m "Auto-merge develop into main [skip ci]"
-          git push origin main
+          git merge --no-ff develop -m "Auto-merge develop into master [skip ci]"
+          git push origin master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
