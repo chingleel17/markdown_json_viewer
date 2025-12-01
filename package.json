@@ -10,6 +10,9 @@
     "preview": "vite preview",
     "deploy": "npm ci && npm run build"
   },
+  "engines": {
+    "node": "20.x"
+  },
   "dependencies": {
     "@toon-format/toon": "^2.0.1",
     "marked": "16.4.1",
