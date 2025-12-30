@@ -106,7 +106,7 @@ watch(inputText, () => {
 
         <div class="d-flex flex-column h-100">
             <!-- Stats Display -->
-            <div v-if="stats" class="modern-card p-2 mb-2 flex-shrink-0">
+            <div v-if="stats" class="border p-2 mb-2 flex-shrink-0">
                 <div class="row g-2 text-center">
                     <div class="col-md-2">
                         <div class="stat-item">

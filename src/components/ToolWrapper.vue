@@ -36,7 +36,7 @@ defineExpose({
 </script>
 
 <template>
-    <div :class="['modern-card', { 'fullscreen-mode': isFullscreen }]">
+    <div class="modern-card" :class="[{ 'fullscreen-mode': isFullscreen }]">
         <div class="modern-card-header px-4  position-relative"
             :class="{ 'py-3': !isFullscreen, 'py-1': isFullscreen }">
             <div class="card-title-wrapper">
@@ -113,7 +113,8 @@ defineExpose({
 .modern-card-body {
     flex: 1 1 0;
     min-height: 0;
-    overflow: hidden;
+    overflow-y: auto;
+    overflow-x: hidden;
     background: var(--theme-bg-card);
     display: flex;
     flex-direction: column;

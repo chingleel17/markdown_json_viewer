@@ -4,6 +4,7 @@ import JsonTool from './pages/JsonTool.vue'
 import MarkdownTool from './pages/MarkdownTool.vue'
 import DocumentViewer from './pages/DocumentViewer.vue'
 import ToonTool from './pages/ToonTool.vue'
+import PasswordGenerator from './pages/PasswordGenerator.vue'
 import ThemeSwitcher from './components/ThemeSwitcher.vue'
 
 const activeTab = ref('json')
@@ -50,6 +51,14 @@ const activeTab = ref('json')
             </li>
             <li class="nav-item">
               <button
+                :class="['nav-link', 'modern-nav-link', 'px-3', 'py-2', 'd-flex', 'align-items-center', { active: activeTab === 'password' }]"
+                @click="activeTab = 'password'">
+                <i class="bi bi-shield-lock me-2"></i>
+                <span>密碼產生器</span>
+              </button>
+            </li>
+            <li class="nav-item">
+              <button
                 :class="['nav-link', 'modern-nav-link', 'px-3', 'py-2', 'd-flex', 'align-items-center', { active: activeTab === 'document' }]"
                 @click="activeTab = 'document'">
                 <i class="bi bi-file-text me-2"></i>
@@ -74,6 +83,7 @@ const activeTab = ref('json')
     <JsonTool v-if="activeTab === 'json'" />
     <MarkdownTool v-if="activeTab === 'markdown'" />
     <ToonTool v-if="activeTab === 'toon'" />
+    <PasswordGenerator v-if="activeTab === 'password'" />
     <DocumentViewer v-if="activeTab === 'document'" />
   </main>
 

@@ -63,7 +63,7 @@ const ragTextInput = useLocalStorage('document-viewer-input', '')
         <div class="row g-4">
             <!-- Data Input Section -->
             <div class="col-12 mb-3">
-                <div class="modern-card" style="background: var(--theme-bg-card)">
+                <div class="border" style="background: var(--theme-bg-card)">
                     <div class="p-4">
                         <h6 class="section-title mb-3 d-flex align-items-center">
                             <i class="bi bi-upload me-2 "></i>
