@@ -21,16 +21,19 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
         with:
           ref: master
+          fetch-depth: 0
       - name: Merge develop into master
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git fetch origin develop:develop
-          git merge --no-ff develop -m "Auto-merge develop into master [skip ci]"
+          git fetch origin develop
+          git merge origin/develop --allow-unrelated-histories -m "Auto-merge develop into master [skip ci]"
           git push origin master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
