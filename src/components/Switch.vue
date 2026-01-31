@@ -48,15 +48,12 @@
 }
 
 .switch input:checked+.slider:before {
-    transform: translateX(1.6em);
-    width: 1.5em;
-    height: 1.5em;
-    bottom: 0;
+    transform: translateX(1.25em);
 }
 </style>
 
 <script setup lang="ts">
-import { defineProps, defineEmits } from 'vue'
+
 const props = defineProps<{ modelValue: boolean }>()
 const emit = defineEmits(['update:modelValue'])
 

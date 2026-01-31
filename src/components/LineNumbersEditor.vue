@@ -41,7 +41,16 @@ function handleInput(e: Event) {
     emit('input', value)
     updateLineNumbers()
 }
-
+function handleKeydown(e: KeyboardEvent) {
+    // 修正 ctrl+a 只選取 textarea 內容
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'a') {
+        if (document.activeElement === textarea.value) {
+            // 只選取 textarea 內容
+            e.stopPropagation();
+            // 不要 preventDefault，否則無法選取內容
+        }
+    }
+}
 watch(() => props.modelValue, () => {
     updateLineNumbers()
 })
@@ -55,7 +64,9 @@ onMounted(() => {
     <div class="line-number-editor-wrapper d-flex h-100">
         <div v-if="showLineNumbers" ref="lineNumbers" class="line-numbers-column">{{ lineNumbersText }}</div>
         <textarea ref="textarea" :value="modelValue" @input="handleInput" @scroll="handleScroll"
-            class="form-control json-textarea p-3" :placeholder="placeholder" spellcheck="false"></textarea>
+            @keydown="handleKeydown" class="form-control json-textarea p-3" :placeholder="placeholder"
+            spellcheck="false"></textarea>
+
     </div>
 </template>
 

@@ -1,5 +1,9 @@
 <script setup lang="ts">
 import { ref, watch, nextTick } from 'vue'
+import { useOutputSelectAll } from '../composables/useOutputSelectAll'
+import { shallowRef } from 'vue'
+const previewWrapper = shallowRef()
+const { handleOutputKeydown } = useOutputSelectAll(previewWrapper)
 import { marked } from 'marked'
 import mermaid from 'mermaid'
 import LineNumbersEditor from '../components/LineNumbersEditor.vue'
@@ -245,9 +249,9 @@ function scrollToTop() {
                     <div class="modern-output-wrapper overflow-hidden flex-grow-1 min-h-0 position-relative d-flex"
                         style="box-shadow: var(--shadow-sm)" @mouseenter="isHoveringPreview = true"
                         @mouseleave="isHoveringPreview = false">
-                        <div ref="previewContainer"
-                            class="modern-output markdown-preview p-3 h-100 overflow-y-auto flex-grow-1"
-                            v-html="markdownOutput" @scroll="handlePreviewScroll"></div>
+                        <div class="modern-output markdown-preview p-3 h-100 overflow-y-auto flex-grow-1" tabindex="0"
+                            :ref="previewWrapper" @keydown="handleOutputKeydown" v-html="markdownOutput"
+                            @scroll="handlePreviewScroll"></div>
 
                         <!-- TOC Sidebar -->
                         <div v-if="showToc" class="toc-sidebar border-start"

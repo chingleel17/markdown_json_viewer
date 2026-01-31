@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import Swal from 'sweetalert2'
 import { ref, computed, watch, nextTick } from 'vue'
+import { useOutputSelectAll } from '../composables/useOutputSelectAll'
+import { shallowRef } from 'vue'
 import LineNumbersEditor from '../components/LineNumbersEditor.vue'
+import CopyButton from '../components/CopyButton.vue'
 import ToolWrapper from '../components/ToolWrapper.vue'
 import ConvertButton from '../components/ConvertButton.vue'
 import ResizableSplitPane from '../components/ResizableSplitPane.vue'
@@ -9,6 +12,9 @@ import { validateAndParseJSON, attemptJSONRepair } from '../json-utils'
 import { useLocalStorage } from '../composables/useLocalStorage'
 
 const jsonInput = useLocalStorage('json-tool-input', '')
+// output 區塊 ref
+const outputWrapper = shallowRef()
+const { handleOutputKeydown } = useOutputSelectAll(outputWrapper)
 const jsonOutput = ref('')
 const jsonTreeOutput = ref('')
 const jsonStatus = ref('')
@@ -198,23 +204,6 @@ function stripHtmlTags(html: string): string {
     return html.replace(/<[^>]*>/g, '')
 }
 
-async function copyJSON() {
-    try {
-        const text = jsonOutput.value ? stripHtmlTags(jsonOutput.value) : stripHtmlTags(jsonTreeOutput.value)
-        await navigator.clipboard.writeText(text)
-    } catch (e) {
-        // 複製失敗用 toast
-        Swal.fire({
-            icon: 'error',
-            title: '複製失敗',
-            toast: true,
-            position: 'center',
-            timer: 2000,
-            showConfirmButton: false
-        })
-    }
-}
-
 function minifyJSON() {
     // 驗證必須有效
     if (!currentJSON) {
@@ -271,7 +260,6 @@ function minifyJSON() {
         })
     }
 }
-
 function generateJSONSchema(obj: any): any {
     if (Array.isArray(obj)) {
         return {
@@ -383,18 +371,20 @@ watch([action, viewMode], () => {
                                         :class="isMinified ? 'bi-arrows-angle-expand' : 'bi-arrows-angle-contract'"></i>
                                     {{ isMinified ? '展開' : '壓縮' }}
                                 </button>
-                                <button class="btn btn-sm btn-outline-success" @click="copyJSON" title="複製">
-                                    <i class="bi bi-clipboard"></i>
-                                </button>
+                                <CopyButton v-show="viewMode === 'text' ? jsonOutput : jsonTreeOutput"
+                                    :text="() => viewMode === 'text' ? stripHtmlTags(jsonOutput) : stripHtmlTags(jsonTreeOutput)"
+                                    copiedText="已複製" btnClass="btn-sm btn-outline-success" effect="firework" />
                             </div>
                         </div>
                         <div class="modern-output-wrapper overflow-hidden flex-grow-1 min-h-0"
-                            style="box-shadow: var(--shadow-sm)">
+                            style="box-shadow: var(--shadow-sm)" tabindex="0" :ref="outputWrapper"
+                            @keydown="handleOutputKeydown">
                             <pre v-if="viewMode === 'text'" class="modern-output p-3 m-0 h-100 overflow-y-auto"
                                 style="white-space: pre-wrap;" v-html="jsonOutput"></pre>
                             <div v-else class="modern-output p-3 h-100 overflow-y-auto" v-html="jsonTreeOutput">
                             </div>
                         </div>
+
                     </div>
                 </template>
             </ResizableSplitPane>

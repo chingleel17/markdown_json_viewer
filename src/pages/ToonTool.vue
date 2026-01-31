@@ -4,6 +4,7 @@ import ResizableSplitPane from '../components/ResizableSplitPane.vue'
 import ToolWrapper from '../components/ToolWrapper.vue'
 import { jsonToToon, toonToJson, type ConversionStats } from '../toon-converter'
 import { useLocalStorage } from '../composables/useLocalStorage'
+import CopyButton from '../components/CopyButton.vue'
 
 const inputText = useLocalStorage('toon-tool-input', '')
 const outputText = ref('')
@@ -69,17 +70,6 @@ function clearAll() {
     outputText.value = ''
     error.value = ''
     stats.value = null
-}
-
-function copyOutput() {
-    if (outputText.value) {
-        navigator.clipboard.writeText(outputText.value)
-    }
-}
-
-// Auto-convert on input
-function handleInput() {
-    convert()
 }
 
 // Watch for changes in input text (including initial load from localStorage)
@@ -176,7 +166,7 @@ watch(inputText, () => {
                                     <i class="bi bi-x-lg"></i>
                                 </button>
                             </div>
-                            <textarea v-model="inputText" @input="handleInput" :placeholder="inputPlaceholder"
+                            <textarea v-model="inputText" @input="convert" :placeholder="inputPlaceholder"
                                 class="json-textarea flex-grow-1 p-3" spellcheck="false"></textarea>
                         </div>
                     </template>
@@ -191,10 +181,9 @@ watch(inputText, () => {
                                         {{ outputLabel }}
                                     </h6>
                                 </div>
-                                <button v-if="outputText" class="btn btn-sm btn-outline-secondary" @click="copyOutput"
-                                    title="複製到剪貼簿">
-                                    <i class="bi bi-clipboard"></i>
-                                </button>
+                                <CopyButton v-show="outputText" :text="outputText" icon="bi-clipboard"
+                                    copiedIcon="bi-check-lg text-success" btnClass="btn-sm btn-outline-secondary"
+                                    effect="firework" :title="'複製到剪貼簿'" />
                             </div>
                             <textarea v-model="outputText"
                                 :placeholder="conversionMode === 'json-to-toon' ? 'TOON 輸出將顯示於此...' : 'JSON 輸出將顯示於此...'"
