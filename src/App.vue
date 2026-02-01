@@ -5,6 +5,7 @@ import MarkdownTool from './pages/MarkdownTool.vue'
 import DocumentViewer from './pages/DocumentViewer.vue'
 import ToonTool from './pages/ToonTool.vue'
 import PasswordGenerator from './pages/PasswordGenerator.vue'
+import DiffViewer from './pages/DiffViewer.vue'
 import ThemeSwitcher from './components/ThemeSwitcher.vue'
 
 const activeTab = ref('json')
@@ -59,6 +60,14 @@ const activeTab = ref('json')
             </li>
             <li class="nav-item">
               <button
+                :class="['nav-link', 'modern-nav-link', 'px-3', 'py-2', 'd-flex', 'align-items-center', { active: activeTab === 'diff' }]"
+                @click="activeTab = 'diff'">
+                <i class="bi bi-file-diff me-2"></i>
+                <span>Diff 檢視</span>
+              </button>
+            </li>
+            <li class="nav-item">
+              <button
                 :class="['nav-link', 'modern-nav-link', 'px-3', 'py-2', 'd-flex', 'align-items-center', { active: activeTab === 'document' }]"
                 @click="activeTab = 'document'">
                 <i class="bi bi-file-text me-2"></i>
@@ -84,6 +93,7 @@ const activeTab = ref('json')
     <MarkdownTool v-if="activeTab === 'markdown'" />
     <ToonTool v-if="activeTab === 'toon'" />
     <PasswordGenerator v-if="activeTab === 'password'" />
+    <DiffViewer v-if="activeTab === 'diff'" />
     <DocumentViewer v-if="activeTab === 'document'" />
   </main>
 
